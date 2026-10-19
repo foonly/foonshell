@@ -1,0 +1,9 @@
+{
+    "calendars": [
+        {
+            "name": "Private",
+            "url": "https://calendar.google.com/calendar/ical/.../basic.ics",
+            "color": "#8ab4f8"
+        }
+    ]
+}

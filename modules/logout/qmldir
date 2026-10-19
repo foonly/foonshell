@@ -1,0 +1,4 @@
+module qs.modules.logout
+Logout 1.0 Logout.qml
+LogoutWindow 1.0 LogoutWindow.qml
+LogoutButton 1.0 LogoutButton.qml

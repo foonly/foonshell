@@ -1,0 +1,19 @@
+{
+    "font": "MonaspiceNe NFP",
+    "fontSize": 13,
+    "iconSize": 15,
+    "barHeight": 34,
+    "gap": 6,
+    "radius": 10,
+    "pillPadding": 10,
+    "clock": {
+        "dateFormat": "ddd d MMM",
+        "timeFormat": "HH:mm"
+    },
+    "bar": {
+        "left": ["workspaces", "windowTitle"],
+        "center": ["clock"],
+        "right": ["media", "tray", "status"],
+        "status": ["bluetooth", "network", "audio", "desk", "battery"]
+    }
+}
