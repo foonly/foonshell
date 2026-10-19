@@ -126,8 +126,8 @@ PanelWindow {
         Pill {
             readonly property bool shown: {
                 for (let i = 0; i < statusRepeater.count; i++) {
-                    const item = statusRepeater.itemAt(i);
-                    if (item && item.visible)
+                    const loader = statusRepeater.itemAt(i);
+                    if (loader && loader.shown)
                         return true;
                 }
                 return false;
@@ -140,9 +140,10 @@ PanelWindow {
 
                 Loader {
                     required property string modelData
+                    readonly property bool shown: item ? (item.shown ?? true) : false
                     anchors.verticalCenter: parent.verticalCenter
                     sourceComponent: root.componentFor(modelData)
-                    visible: item ? (item.shown ?? true) : false
+                    visible: shown
                 }
             }
         }
