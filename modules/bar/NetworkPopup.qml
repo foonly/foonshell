@@ -17,10 +17,25 @@ BarPopup {
     property var failedNetwork
     property string failedReason
 
+    readonly property var visibleNetworks: (wifiDevice?.networks.values ?? []).filter(n => n.name !== "")
     // Connected first, then saved, then by signal strength
-    readonly property var networks: (wifiDevice?.networks.values ?? [])
-        .filter(n => n.name !== "")
+    readonly property var sortedNetworks: visibleNetworks.slice()
         .sort((a, b) => (b.connected - a.connected) || (b.known - a.known) || (b.signalStrength - a.signalStrength))
+    // Order snapshot taken while a password prompt is open, so its row doesn't move
+    property var frozenOrder: null
+    readonly property var networks: {
+        const order = frozenOrder;
+        if (!order)
+            return sortedNetworks;
+        // Networks that appeared after the snapshot go at the end
+        const rank = n => {
+            const i = order.indexOf(n);
+            return i < 0 ? order.length : i;
+        };
+        return visibleNetworks.slice().sort((a, b) => rank(a) - rank(b));
+    }
+
+    onPasswordForChanged: frozenOrder = passwordFor ? sortedNetworks : null
 
     onVisibleChanged: {
         if (wifiDevice)
@@ -198,7 +213,11 @@ BarPopup {
         implicitHeight: Math.min(contentHeight, 360)
         clip: true
         spacing: 2
-        model: root.enabled ? root.networks : []
+        // ScriptModel diffs updates instead of resetting, so delegates (and the
+        // password being typed) survive the frequent signal strength refreshes
+        model: ScriptModel {
+            values: root.enabled ? root.networks : []
+        }
 
         delegate: Column {
             id: row
