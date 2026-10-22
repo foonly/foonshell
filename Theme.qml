@@ -4,7 +4,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 
-// Colors come from ~/.config/foonshell/colors.json, which matugen regenerates on wallpaper change.
+// Colors come from ~/.local/state/foonshell/colors.json, which matugen regenerates on wallpaper change.
 // The file is watched, so the bar recolors without a restart.
 Singleton {
     id: root
@@ -21,7 +21,7 @@ Singleton {
     readonly property int pillPadding: Config.pillPadding
 
     FileView {
-        path: `${Config.configDir}/colors.json`
+        path: `${Config.stateDir}/colors.json`
         watchChanges: true
         printErrors: false
         onFileChanged: reload()

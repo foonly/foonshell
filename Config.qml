@@ -11,6 +11,8 @@ Singleton {
 
     readonly property string configDir: `${Quickshell.env("XDG_CONFIG_HOME") || Quickshell.env("HOME") + "/.config"}/foonshell`
     readonly property string configPath: `${configDir}/config.json`
+    // Generated files such as colors.json go here, not into the config dir
+    readonly property string stateDir: `${Quickshell.env("XDG_STATE_HOME") || Quickshell.env("HOME") + "/.local/state"}/foonshell`
 
     property var data: ({})
 
