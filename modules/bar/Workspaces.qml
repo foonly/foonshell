@@ -24,6 +24,8 @@ Pill {
             readonly property bool occupied: modelData.toplevels.values.length > 0
             // One icon per app, so five terminals don't take up five slots
             readonly property var icons: {
+                // Desktop entries load after startup; depending on them redoes the lookup then
+                DesktopEntries.applications.values;
                 const seen = new Set();
                 const result = [];
                 for (const t of modelData.toplevels.values) {
