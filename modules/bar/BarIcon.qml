@@ -39,7 +39,7 @@ MouseArea {
             text: root.label
             font.family: Theme.font
             font.pixelSize: Theme.fontSize
-            color: root.dimmed ? Theme.c.outline : Theme.c.on_surface
+            color: root.dimmed ? Theme.c.outline : Theme.text
             anchors.verticalCenter: parent.verticalCenter
         }
     }

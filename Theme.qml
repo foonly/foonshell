@@ -19,6 +19,16 @@ Singleton {
     readonly property int gap: Config.gap
     readonly property int radius: Config.radius
     readonly property int pillPadding: Config.pillPadding
+    // Scales the fixed corner radii of individual widgets with the radius setting,
+    // so they keep their designed look at the default 10 and follow a smaller one
+    function round(r: real): real {
+        return r * Config.radius / 10;
+    }
+    readonly property bool outlined: Config.outlined
+    readonly property bool iconTint: Config.iconTint
+    // Text colors on the bar itself; popups and tooltips use the palette directly
+    readonly property color text: Config.accentText ? c.primary : c.on_surface
+    readonly property color textVariant: Config.accentText ? c.primary : c.on_surface_variant
 
     FileView {
         path: `${Config.stateDir}/colors.json`

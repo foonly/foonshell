@@ -63,6 +63,9 @@ Copy `config.example.json` to `~/.config/foonshell/config.json` to customize fon
     "gap": 6,
     "radius": 10,
     "pillPadding": 10,
+    "outlined": false,
+    "iconTint": false,
+    "accentText": false,
     "clock": {
         "dateFormat": "ddd d MMM",
         "timeFormat": "HH:mm"
@@ -75,6 +78,8 @@ Copy `config.example.json` to `~/.config/foonshell/config.json` to customize fon
     }
 }
 ```
+
+`radius` also scales the smaller corners inside widgets and popups (`0` squares off every corner), and `outlined` draws pills and popups as thin outlines instead of filled boxes, and `iconTint` recolors app and tray icons to the accent color of the status icons, and `accentText` does the same for the text on the bar. A `timeFormat` with seconds (`HH:mm:ss`) makes the clock tick every second.
 
 Available widgets: `workspaces`, `windowTitle`, `clock`, `media`, `tray`, `status`, `bluetooth`, `network`, `audio`, `desk`, `battery`.
 

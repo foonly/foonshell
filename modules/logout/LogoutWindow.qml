@@ -157,7 +157,7 @@ PanelWindow {
             Rectangle {
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: 28
-                radius: 14
+                radius: Theme.round(14)
                 color: Theme.c.surface_container
                 border.width: 1
                 border.color: Theme.c.outline_variant

@@ -54,7 +54,7 @@ Rectangle {
         }
         width: 24
         height: 22
-        radius: 6
+        radius: Theme.round(6)
         color: root.isHighlighted ? Qt.rgba(root.accentColor.r, root.accentColor.g, root.accentColor.b, 0.22) : Theme.c.surface_container_high
         border.width: 1
         border.color: root.isHighlighted ? root.accentColor : Theme.c.outline_variant

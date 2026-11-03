@@ -41,7 +41,7 @@ Pill {
 
             onWheel: event => modelData.scroll(event.angleDelta.y, false)
 
-            IconImage {
+            AppIcon {
                 anchors.fill: parent
                 source: {
                     // Some apps (Electron, Steam) send "name?path=/dir" instead of an icon name

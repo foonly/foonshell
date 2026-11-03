@@ -17,5 +17,5 @@ Text {
     elide: Text.ElideRight
     font.family: Theme.font
     font.pixelSize: Theme.fontSize
-    color: Theme.c.on_surface_variant
+    color: Theme.textVariant
 }

@@ -43,7 +43,7 @@ BarPopup {
 
         Rectangle {
             anchors.fill: parent
-            radius: height / 2
+            radius: Theme.round(height / 2)
             color: button.containsMouse && button.enabled ? Theme.c.surface_container_highest : "transparent"
         }
 
@@ -162,13 +162,13 @@ BarPopup {
                 anchors.verticalCenter: parent.verticalCenter
                 width: parent.width
                 height: 4
-                radius: 2
+                radius: Theme.round(2)
                 color: Theme.c.surface_container_highest
 
                 Rectangle {
                     width: parent.width * Math.min(1, (root.player?.position ?? 0) / (root.player?.length || 1))
                     height: parent.height
-                    radius: 2
+                    radius: Theme.round(2)
                     color: Theme.c.primary
                 }
             }

@@ -11,7 +11,9 @@ Rectangle {
     implicitWidth: row.implicitWidth + Theme.pillPadding * 2
     implicitHeight: Theme.barHeight - Theme.gap * 2
     radius: Theme.radius
-    color: Theme.c.surface_container_high
+    color: Theme.outlined ? "transparent" : Theme.c.surface_container_high
+    border.width: Theme.outlined ? 1 : 0
+    border.color: Theme.c.outline_variant
 
     Row {
         id: row

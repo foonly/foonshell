@@ -38,7 +38,7 @@ MouseArea {
 
             ClippingRectangle {
                 anchors.fill: parent
-                radius: 4
+                radius: Theme.round(4)
                 color: "transparent"
                 visible: root.hasArt
 
@@ -70,7 +70,7 @@ MouseArea {
             elide: Text.ElideRight
             font.family: Theme.font
             font.pixelSize: Theme.fontSize
-            color: Theme.c.on_surface_variant
+            color: Theme.textVariant
         }
     }
 

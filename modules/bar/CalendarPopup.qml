@@ -76,7 +76,7 @@ BarPopup {
 
         Rectangle {
             anchors.fill: parent
-            radius: height / 2
+            radius: Theme.round(height / 2)
             color: button.containsMouse ? Theme.c.surface_container_highest : "transparent"
         }
 
@@ -204,7 +204,7 @@ BarPopup {
                     y: 1
                     width: 26
                     height: 26
-                    radius: height / 2
+                    radius: Theme.round(height / 2)
                     color: day.isToday ? Theme.c.primary
                         : day.containsMouse ? Theme.c.surface_container_highest
                         : "transparent"
@@ -241,7 +241,7 @@ BarPopup {
                             required property string modelData
                             width: 4
                             height: 4
-                            radius: 2
+                            radius: Theme.round(2)
                             color: modelData
                             opacity: day.inMonth ? 1 : 0.4
                         }
@@ -316,7 +316,7 @@ BarPopup {
                 id: bar
                 width: 3
                 height: parent.height
-                radius: 1.5
+                radius: Theme.round(1.5)
                 color: root.eventColor(event.modelData)
             }
 

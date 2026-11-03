@@ -24,6 +24,12 @@ Singleton {
     readonly property int gap: data.gap ?? 6
     readonly property int radius: data.radius ?? 10
     readonly property int pillPadding: data.pillPadding ?? 10
+    // Pills and popups as thin outlines on the bar color instead of filled boxes
+    readonly property bool outlined: data.outlined ?? false
+    // App and tray icons in a single theme color instead of their own
+    readonly property bool iconTint: data.iconTint ?? false
+    // Text on the bar in the accent color of the status icons
+    readonly property bool accentText: data.accentText ?? false
 
     readonly property string dateFormat: data.clock?.dateFormat ?? "ddd d MMM"
     readonly property string timeFormat: data.clock?.timeFormat ?? "HH:mm"

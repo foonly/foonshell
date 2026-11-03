@@ -30,7 +30,7 @@ PopupWindow {
     Rectangle {
         anchors.fill: parent
         radius: Theme.radius
-        color: Theme.c.surface_container
+        color: Theme.outlined ? Theme.c.surface : Theme.c.surface_container
         border.color: Theme.c.outline_variant
 
         Column {

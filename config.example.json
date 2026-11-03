@@ -6,6 +6,9 @@
     "gap": 6,
     "radius": 10,
     "pillPadding": 10,
+    "outlined": false,
+    "iconTint": false,
+    "accentText": false,
     "clock": {
         "dateFormat": "ddd d MMM",
         "timeFormat": "HH:mm"

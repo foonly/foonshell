@@ -22,6 +22,8 @@ Pill {
             required property HyprlandWorkspace modelData
             readonly property bool current: modelData.active
             readonly property bool occupied: modelData.toplevels.values.length > 0
+            // On a filled (current or urgent) button, content needs the dark text color
+            readonly property bool filled: current || modelData.urgent
             // One icon per app, so five terminals don't take up five slots
             readonly property var icons: {
                 // Desktop entries load after startup; depending on them redoes the lookup then
@@ -41,7 +43,7 @@ Pill {
 
             implicitWidth: Math.max(current ? 28 : 18, content.implicitWidth + 12)
             implicitHeight: 18
-            radius: height / 2
+            radius: Theme.round(height / 2)
             color: modelData.urgent ? Theme.c.error
                 : current ? Theme.c.primary
                 : mouse.containsMouse ? Theme.c.surface_container_highest
@@ -61,17 +63,20 @@ Pill {
                     font.family: Theme.font
                     font.pixelSize: Theme.fontSize - 1
                     font.bold: button.current
-                    color: button.current ? Theme.c.on_primary
-                        : button.occupied ? Theme.c.on_surface
+                    color: button.filled ? Theme.c.on_primary
+                        : button.occupied ? Theme.text
                         : Theme.c.outline
                 }
 
                 Repeater {
                     model: button.icons
 
-                    IconImage {
+                    AppIcon {
                         required property string modelData
                         anchors.verticalCenter: parent.verticalCenter
+                        // The accent would vanish on a filled button, and dark tints flatten
+                        // the icon into a block, so those are tinted light
+                        tint: button.filled ? Theme.c.on_surface : Theme.c.primary
                         implicitSize: 12
                         source: modelData
                     }

@@ -8,14 +8,14 @@ Pill {
 
     SystemClock {
         id: clock
-        precision: SystemClock.Minutes
+        precision: /s/.test(Config.timeFormat + Config.dateFormat) ? SystemClock.Seconds : SystemClock.Minutes
     }
 
     Text {
         text: Qt.formatDateTime(clock.date, Config.dateFormat)
         font.family: Theme.font
         font.pixelSize: Theme.fontSize
-        color: Theme.c.on_surface_variant
+        color: Theme.textVariant
     }
 
     Text {
@@ -23,7 +23,7 @@ Pill {
         font.family: Theme.font
         font.pixelSize: Theme.fontSize
         font.bold: true
-        color: Theme.c.on_surface
+        color: Theme.text
     }
 
     MouseArea {

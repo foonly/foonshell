@@ -266,7 +266,7 @@ Scope {
             anchors.horizontalCenter: parent.horizontalCenter
             width: 320
             implicitHeight: column.implicitHeight + 24
-            radius: 18
+            radius: Theme.round(18)
             color: Qt.rgba(Theme.c.surface_container.r, Theme.c.surface_container.g, Theme.c.surface_container.b, 0.85)
             border.width: 1.5
             border.color: root.isCurrentMuted ? Theme.c.outline_variant : root.accentColor
@@ -356,12 +356,12 @@ Scope {
                 Rectangle {
                     width: parent.width
                     height: 6
-                    radius: 3
+                    radius: Theme.round(3)
                     color: Theme.c.surface_container_highest
 
                     Rectangle {
                         height: parent.height
-                        radius: 3
+                        radius: Theme.round(3)
                         width: parent.width * Math.min(1.0, Math.max(0.0, root.isCurrentMuted ? 0 : root.currentVolume))
                         color: root.isCurrentMuted ? Theme.c.outline : root.currentVolume > 1.0 ? Theme.c.error : root.accentColor
 
