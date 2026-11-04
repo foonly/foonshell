@@ -19,6 +19,9 @@ Singleton {
     readonly property string font: data.font ?? "MonaspiceNe NFP"
     readonly property int fontSize: data.fontSize ?? 13
     readonly property int iconSize: data.iconSize ?? 15
+    // For the clock and workspace numbers; the body font if unset
+    readonly property string displayFont: data.displayFont ?? font
+    readonly property int displayFontSize: data.displayFontSize ?? fontSize
 
     readonly property int barHeight: data.barHeight ?? 34
     readonly property int gap: data.gap ?? 6
@@ -28,7 +31,7 @@ Singleton {
     readonly property bool outlined: data.outlined ?? false
     // App and tray icons in a single theme color instead of their own
     readonly property bool iconTint: data.iconTint ?? false
-    // Text on the bar in the accent color of the status icons
+    // Text on the bar in the primary color instead of the neutral text colors
     readonly property bool accentText: data.accentText ?? false
 
     readonly property string dateFormat: data.clock?.dateFormat ?? "ddd d MMM"

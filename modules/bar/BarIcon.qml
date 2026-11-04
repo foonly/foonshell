@@ -30,7 +30,7 @@ MouseArea {
             text: root.icon
             font.family: Theme.font
             font.pixelSize: Theme.iconSize
-            color: root.alert ? Theme.c.error : root.dimmed ? Theme.c.outline : Theme.c.primary
+            color: root.alert ? Theme.c.error : root.dimmed ? Theme.c.outline : Theme.accent
             anchors.verticalCenter: parent.verticalCenter
         }
 

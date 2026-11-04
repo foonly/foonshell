@@ -2,6 +2,8 @@
     "font": "MonaspiceNe NFP",
     "fontSize": 13,
     "iconSize": 15,
+    "displayFont": "MonaspiceNe NFP",
+    "displayFontSize": 13,
     "barHeight": 34,
     "gap": 6,
     "radius": 10,

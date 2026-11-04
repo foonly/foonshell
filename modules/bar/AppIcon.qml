@@ -7,7 +7,7 @@ import qs
 IconImage {
     id: root
 
-    property color tint: Theme.c.primary
+    property color tint: Theme.accent
 
     layer.enabled: Theme.iconTint
     layer.effect: MultiEffect {

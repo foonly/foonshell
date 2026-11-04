@@ -13,15 +13,15 @@ Pill {
 
     Text {
         text: Qt.formatDateTime(clock.date, Config.dateFormat)
-        font.family: Theme.font
-        font.pixelSize: Theme.fontSize
+        font.family: Theme.displayFont
+        font.pixelSize: Theme.displayFontSize
         color: Theme.textVariant
     }
 
     Text {
         text: Qt.formatDateTime(clock.date, Config.timeFormat)
-        font.family: Theme.font
-        font.pixelSize: Theme.fontSize
+        font.family: Theme.displayFont
+        font.pixelSize: Theme.displayFontSize
         font.bold: true
         color: Theme.text
     }

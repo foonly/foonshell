@@ -59,6 +59,8 @@ Copy `config.example.json` to `~/.config/foonshell/config.json` to customize fon
     "font": "MonaspiceNe NFP",
     "fontSize": 13,
     "iconSize": 15,
+    "displayFont": "MonaspiceNe NFP",
+    "displayFontSize": 13,
     "barHeight": 34,
     "gap": 6,
     "radius": 10,
@@ -79,7 +81,7 @@ Copy `config.example.json` to `~/.config/foonshell/config.json` to customize fon
 }
 ```
 
-`radius` also scales the smaller corners inside widgets and popups (`0` squares off every corner), and `outlined` draws pills and popups as thin outlines instead of filled boxes, and `iconTint` recolors app and tray icons to the accent color of the status icons, and `accentText` does the same for the text on the bar. A `timeFormat` with seconds (`HH:mm:ss`) makes the clock tick every second.
+`displayFont` and `displayFontSize` set the font of the clock and workspace numbers (default the main font). `radius` also scales the smaller corners inside widgets and popups (`0` squares off every corner). `outlined` draws pills and popups as thin outlines instead of filled boxes, `iconTint` recolors app and tray icons to the accent color of the status icons, and `accentText` colors the text on the bar with `primary`. A `timeFormat` with seconds (`HH:mm:ss`) makes the clock tick every second.
 
 Available widgets: `workspaces`, `windowTitle`, `clock`, `media`, `tray`, `status`, `bluetooth`, `network`, `audio`, `desk`, `battery`.
 
@@ -103,7 +105,7 @@ Fetched events are cached in `~/.cache/foonshell/events.json`.
 
 ### `colors.json`
 
-`~/.local/state/foonshell/colors.json` (`$XDG_STATE_HOME/foonshell/colors.json`) defines Material Design 3 color tokens (`background`, `surface`, `surface_container`, `surface_container_high`, `surface_container_highest`, `on_surface`, `on_surface_variant`, `outline`, `outline_variant`, `primary`, `on_primary`, `secondary`, `tertiary`, `error`). If omitted, `Theme.qml` uses built-in dark palette fallbacks.
+`~/.local/state/foonshell/colors.json` (`$XDG_STATE_HOME/foonshell/colors.json`) defines Material Design 3 color tokens (`background`, `surface`, `surface_container`, `surface_container_high`, `surface_container_highest`, `on_surface`, `on_surface_variant`, `outline`, `outline_variant`, `primary`, `on_primary`, `secondary`, `tertiary`, `error`), plus optional `highlight` and `on_highlight` for the status icons and current workspace (default `primary` and `on_primary`). If omitted, `Theme.qml` uses built-in dark palette fallbacks.
 
 ## IPC Commands
 

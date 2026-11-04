@@ -45,7 +45,7 @@ Pill {
             implicitHeight: 18
             radius: Theme.round(height / 2)
             color: modelData.urgent ? Theme.c.error
-                : current ? Theme.c.primary
+                : current ? Theme.accent
                 : mouse.containsMouse ? Theme.c.surface_container_highest
                 : "transparent"
 
@@ -60,10 +60,11 @@ Pill {
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
                     text: button.modelData.name
-                    font.family: Theme.font
-                    font.pixelSize: Theme.fontSize - 1
+                    font.family: Theme.displayFont
+                    font.pixelSize: Theme.displayFontSize - 1
                     font.bold: button.current
-                    color: button.filled ? Theme.c.on_primary
+                    color: button.modelData.urgent ? Theme.c.on_primary
+                        : button.current ? Theme.onAccent
                         : button.occupied ? Theme.text
                         : Theme.c.outline
                 }
@@ -76,7 +77,7 @@ Pill {
                         anchors.verticalCenter: parent.verticalCenter
                         // The accent would vanish on a filled button, and dark tints flatten
                         // the icon into a block, so those are tinted light
-                        tint: button.filled ? Theme.c.on_surface : Theme.c.primary
+                        tint: button.filled ? Theme.c.on_surface : Theme.accent
                         implicitSize: 12
                         source: modelData
                     }

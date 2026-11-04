@@ -59,7 +59,7 @@ MouseArea {
                 text: "󰝚"
                 font.family: Theme.font
                 font.pixelSize: Theme.iconSize
-                color: Theme.c.primary
+                color: Theme.accent
             }
         }
 
