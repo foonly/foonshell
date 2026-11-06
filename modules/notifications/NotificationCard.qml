@@ -5,25 +5,29 @@ import Quickshell.Widgets
 import qs
 
 // Left click runs the default action (or dismisses), right click dismisses.
-// Hovering pauses the timeout.
+// As a popup it hides after its timeout (paused while hovered) and stays in the center.
 Rectangle {
     id: root
 
     required property Notification modelData
+    // False inside the notification center, where cards don't time out
+    property bool popup: true
     readonly property bool critical: modelData.urgency === NotificationUrgency.Critical
+    readonly property bool persistent: NotificationService.isPersistent(modelData)
+    readonly property real arrivedAt: NotificationService.arrivedAt(modelData)
     readonly property string image: modelData.image || (modelData.appIcon ? Quickshell.iconPath(modelData.appIcon, true) : "")
 
     implicitHeight: content.implicitHeight + 24
     radius: Theme.radius
-    color: Theme.c.surface_container
-    border.width: 2
+    color: popup ? Theme.c.surface_container : Theme.c.surface_container_high
+    border.width: popup || critical ? 2 : 0
     border.color: critical ? Theme.c.error : Theme.c.outline_variant
 
     Timer {
         // Apps send -1 for "server default", 0 for "never expire"
         interval: root.modelData.expireTimeout > 0 ? root.modelData.expireTimeout : 6000
-        running: !root.critical && root.modelData.expireTimeout !== 0 && !mouse.containsMouse
-        onTriggered: root.modelData.expire()
+        running: root.popup && !root.critical && root.modelData.expireTimeout !== 0 && !mouse.containsMouse
+        onTriggered: NotificationService.hidePopup(root.modelData)
     }
 
     MouseArea {
@@ -60,13 +64,33 @@ Rectangle {
             width: parent.width - (root.image !== "" ? 52 : 0)
             spacing: 4
 
-            Text {
+            Item {
                 width: parent.width
-                text: root.modelData.appName
-                font.family: Theme.font
-                font.pixelSize: Theme.fontSize - 2
-                color: Theme.c.primary
-                elide: Text.ElideRight
+                implicitHeight: appName.implicitHeight
+
+                Text {
+                    id: appName
+                    anchors {
+                        left: parent.left
+                        right: meta.left
+                        rightMargin: 8
+                    }
+                    text: root.modelData.appName
+                    font.family: Theme.font
+                    font.pixelSize: Theme.fontSize - 2
+                    color: Theme.c.primary
+                    elide: Text.ElideRight
+                }
+
+                Text {
+                    id: meta
+                    anchors.right: parent.right
+                    readonly property bool today: new Date(root.arrivedAt).toDateString() === new Date().toDateString()
+                    text: (root.persistent ? "󰐃 " : "") + (root.arrivedAt > 0 ? Qt.formatDateTime(new Date(root.arrivedAt), today ? Config.timeFormat : Config.dateFormat) : "")
+                    font.family: Theme.font
+                    font.pixelSize: Theme.fontSize - 2
+                    color: root.critical ? Theme.c.error : Theme.c.outline
+                }
             }
 
             Text {

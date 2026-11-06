@@ -39,8 +39,12 @@ Singleton {
 
     readonly property var barLeft: data.bar?.left ?? ["workspaces", "windowTitle"]
     readonly property var barCenter: data.bar?.center ?? ["clock"]
-    readonly property var barRight: data.bar?.right ?? ["media", "tray", "status"]
+    readonly property var barRight: data.bar?.right ?? ["media", "tray", "status", "notifications"]
     readonly property var barStatus: data.bar?.status ?? ["bluetooth", "network", "audio", "desk", "battery"]
+
+    // Non-persistent notifications kept in the notification center before the
+    // lowest-priority, oldest ones are pushed off
+    readonly property int notificationHistory: data.notifications?.history ?? 30
 
     FileView {
         path: root.configPath

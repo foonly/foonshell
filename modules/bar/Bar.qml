@@ -43,6 +43,8 @@ PanelWindow {
             return deskComp;
         case "battery":
             return batteryComp;
+        case "notifications":
+            return notificationsComp;
         default:
             console.warn("bar: unknown widget", name);
             return null;
@@ -119,6 +121,11 @@ PanelWindow {
     Component {
         id: batteryComp
         Battery {}
+    }
+
+    Component {
+        id: notificationsComp
+        NotificationCenter {}
     }
 
     Component {

@@ -1,28 +1,17 @@
 import QtQuick
 import Quickshell
 import Quickshell.Hyprland
-import Quickshell.Services.Notifications
 import Quickshell.Wayland
 import qs
 
-// Notification daemon with popups in the top-right of the focused monitor
+// Popups in the top-right of the focused monitor. The server and history live in
+// NotificationService; timed-out popups stay in the notification center on the bar.
 Scope {
     id: root
 
-    NotificationServer {
-        id: server
-
-        keepOnReload: true
-        actionsSupported: true
-        imageSupported: true
-        bodyMarkupSupported: true
-
-        onNotification: notification => notification.tracked = true
-    }
-
     PanelWindow {
         screen: Quickshell.screens.find(s => s.name === Hyprland.focusedMonitor?.name) ?? Quickshell.screens[0]
-        visible: server.trackedNotifications.values.length > 0
+        visible: NotificationService.popups.length > 0 && !NotificationService.centerOpen
         color: "transparent"
         WlrLayershell.layer: WlrLayer.Overlay
         WlrLayershell.namespace: "foonshell:notifications"
@@ -46,7 +35,7 @@ Scope {
             spacing: Theme.gap
 
             Repeater {
-                model: server.trackedNotifications
+                model: NotificationService.popups
 
                 NotificationCard {
                     width: column.width
