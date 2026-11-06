@@ -1,0 +1,6 @@
+# Lets members of wheel set the battery charge thresholds, so the foonshell battery
+# widget can lock the charge limit and unlock a full charge without root.
+# Install: sudo cp 99-foonshell-charge-limit.rules /etc/udev/rules.d/
+#          sudo udevadm control --reload && sudo udevadm trigger -s power_supply
+SUBSYSTEM=="power_supply", ATTR{type}=="Battery", TEST=="charge_control_end_threshold", \
+  RUN+="/bin/sh -c 'cd /sys%p && chgrp wheel charge_control_*_threshold && chmod g+w charge_control_*_threshold'"

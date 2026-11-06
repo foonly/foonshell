@@ -15,7 +15,7 @@ A desktop shell for Hyprland built with [Quickshell](https://quickshell.outfoxxe
     - **Network**: Wired and Wi-Fi status, signal strength, and network switcher popup.
     - **Audio**: PipeWire output/input volume, device form-factor icons, mute toggle, and device picker popup.
     - **Standing Desk**: Live height and preset controls when the `desk` CLI is available.
-    - **Battery**: Laptop battery status, remaining time, power draw, health, charge cycles, and charge limit.
+    - **Battery**: Laptop battery status, remaining time, power draw, health, charge cycles, and charge limit. Right click unlocks a full charge past the limit; it relocks on its own when unplugged or full.
 - **Notifications**: Built-in desktop notification server with actions, markup, and image support.
   - **Notification Center**: Bell at the far right of the bar with an unread count. Click it to see past notifications: persistent ones (critical, never-expiring or resident) first, then the rest by urgency, newest first. Only the latest `notifications.history` (default 30) non-persistent notifications are kept; the lowest-priority, oldest ones drop off first.
 - **Logout / Power Menu**: Full-screen overlay with keyboard navigation, shortcut keys, and IPC triggers (`lock`, `logout`, `suspend`, `reboot`, `shutdown`).
@@ -47,6 +47,17 @@ Run with Quickshell:
 qs -c foonshell
 ```
 
+### Battery charge limit
+
+The battery widget keeps the battery at `battery.chargeLimit` (default 80%) and can unlock a full charge with a right click. It writes the kernel's `charge_control_*_threshold` files, which are root-only by default. The included udev rule gives the `wheel` group write access:
+
+```sh
+sudo cp extras/99-foonshell-charge-limit.rules /etc/udev/rules.d/
+sudo udevadm control --reload && sudo udevadm trigger -s power_supply
+```
+
+Leave UPower's charge threshold switch and TLP's `START/STOP_CHARGE_THRESH_BAT*` unset, or they will fight over the thresholds.
+
 ## Configuration
 
 User configuration lives in `~/.config/foonshell/` (or `$XDG_CONFIG_HOME/foonshell/`). All files and keys are optional and hot-reloaded on change.
@@ -73,6 +84,9 @@ Copy `config.example.json` to `~/.config/foonshell/config.json` to customize fon
         "dateFormat": "ddd d MMM",
         "timeFormat": "HH:mm"
     },
+    "battery": {
+        "chargeLimit": 80
+    },
     "notifications": {
         "history": 30
     },
@@ -85,7 +99,7 @@ Copy `config.example.json` to `~/.config/foonshell/config.json` to customize fon
 }
 ```
 
-`displayFont` and `displayFontSize` set the font of the clock and workspace numbers (default the main font). `radius` also scales the smaller corners inside widgets and popups (`0` squares off every corner). `outlined` draws pills and popups as thin outlines instead of filled boxes, `iconTint` recolors app and tray icons to the accent color of the status icons, and `accentText` colors the text on the bar with `primary`. A `timeFormat` with seconds (`HH:mm:ss`) makes the clock tick every second. `notifications.history` caps how many non-persistent notifications the notification center keeps.
+`displayFont` and `displayFontSize` set the font of the clock and workspace numbers (default the main font). `radius` also scales the smaller corners inside widgets and popups (`0` squares off every corner). `outlined` draws pills and popups as thin outlines instead of filled boxes, `iconTint` recolors app and tray icons to the accent color of the status icons, and `accentText` colors the text on the bar with `primary`. A `timeFormat` with seconds (`HH:mm:ss`) makes the clock tick every second. `battery.chargeLimit` is where the battery stops charging unless a full charge is unlocked. `notifications.history` caps how many non-persistent notifications the notification center keeps.
 
 Available widgets: `workspaces`, `windowTitle`, `clock`, `media`, `tray`, `status`, `bluetooth`, `network`, `audio`, `desk`, `battery`, `notifications`.
 

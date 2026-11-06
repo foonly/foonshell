@@ -15,6 +15,9 @@
         "dateFormat": "ddd d MMM",
         "timeFormat": "HH:mm"
     },
+    "battery": {
+        "chargeLimit": 80
+    },
     "notifications": {
         "history": 30
     },

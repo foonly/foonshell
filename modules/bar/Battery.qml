@@ -4,7 +4,8 @@ import Quickshell.Io
 import Quickshell.Services.UPower
 import qs
 
-// Only shown on machines with a laptop battery. Left click: toggle time remaining. Hover: details.
+// Only shown on machines with a laptop battery. Left click: toggle time remaining.
+// Right click: unlock a full charge past the charge limit (relocks on unplug or when full). Hover: details.
 BarIcon {
     id: root
 
@@ -58,6 +59,68 @@ BarIcon {
         chargeLimit.reload();
     }
 
+    // Charge limit toggle. Locked, the battery stops at Config.chargeLimit and only starts again
+    // five points below it; unlocked, it charges to 100%. The thresholds are written straight to
+    // sysfs, which needs the udev rule in extras/ for write access. The firmware keeps them across
+    // reboots. UPower's EnableChargeThreshold isn't used: on ThinkPads it doesn't restore the limit.
+    readonly property string sysfsDir: cell ? `/sys/class/power_supply/${cell.nativePath}` : ""
+    readonly property int limitEnd: parseInt(chargeLimit.text())
+    readonly property bool limitSupported: limitEnd > 0
+    // 0 is how some drivers report "no limit"
+    readonly property bool unlocked: limitSupported && (limitEnd >= 100 || limitEnd === 0)
+    property string limitError
+
+    function setLimit(locked: bool) {
+        if (!sysfsDir || setLimitProc.running)
+            return;
+        const start = `${sysfsDir}/charge_control_start_threshold`;
+        const end = `${sysfsDir}/charge_control_end_threshold`;
+        // Start must stay below end, so the order of the two writes depends on the direction
+        const script = locked
+            ? `{ [ ! -e ${start} ] || echo ${Config.chargeLimit - 5} > ${start}; } && echo ${Config.chargeLimit} > ${end}`
+            : `echo 100 > ${end} && { [ ! -e ${start} ] || echo 0 > ${start}; }`;
+        setLimitProc.command = ["sh", "-c", script];
+        setLimitProc.running = true;
+    }
+
+    // Relock once the full charge has been used: unplugged, or done charging
+    function relockIfDone() {
+        if (unlocked && (UPower.onBattery || battery?.state === UPowerDeviceState.FullyCharged || (charging && percentage >= 0.995)))
+            setLimit(true);
+    }
+
+    // Re-read the limit as the battery changes, in case something else set it
+    onPercentageChanged: {
+        chargeLimit.reload();
+        relockIfDone();
+    }
+    onChargingChanged: {
+        chargeLimit.reload();
+        relockIfDone();
+    }
+    onUnlockedChanged: relockIfDone()
+
+    Connections {
+        target: UPower
+
+        function onOnBatteryChanged() {
+            root.relockIfDone();
+        }
+    }
+
+    Process {
+        id: setLimitProc
+        stderr: StdioCollector {
+            id: setLimitErr
+        }
+        onExited: code => {
+            root.limitError = code === 0 ? "" : "No write access, see README";
+            if (code !== 0)
+                console.warn("battery: setting the charge limit failed:", setLimitErr.text.trim());
+            chargeLimit.reload();
+        }
+    }
+
     readonly property bool shown: UPower.devices.values.some(d => d.isLaptopBattery)
 
     visible: shown
@@ -67,13 +130,14 @@ BarIcon {
         return charging ? ["󰢟", "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"][level] : ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"][level];
     }
     label: {
-        if (showTime && seconds > 0)
-            return duration(seconds);
-        return `${Math.round(percentage * 100)}%`;
+        const text = showTime && seconds > 0 ? duration(seconds) : `${Math.round(percentage * 100)}%`;
+        return unlocked ? `${text} 󰌿` : text;
     }
     alert: !charging && percentage <= 0.15
 
     onLeftClicked: showTime = !showTime
+    onRightClicked: if (limitSupported)
+        setLimit(unlocked)
 
     onContainsMouseChanged: if (containsMouse)
         refreshFiles()
@@ -109,9 +173,12 @@ BarIcon {
                     const cycleCount = parseInt(cycles.text());
                     if (cycleCount > 0)
                         rows.push("Cycles", `${cycleCount}`);
-                    const limit = parseInt(chargeLimit.text());
-                    if (limit > 0 && limit < 100)
-                        rows.push("Charge limit", `${limit}%`);
+                    if (root.limitError)
+                        rows.push("Charge limit", root.limitError);
+                    else if (root.unlocked)
+                        rows.push("Charge limit", "Unlocked until full or unplugged");
+                    else if (root.limitSupported)
+                        rows.push("Charge limit", `${root.limitEnd}%`);
                     rows.push("Profile", PowerProfile.toString(PowerProfiles.profile));
                     return rows;
                 }

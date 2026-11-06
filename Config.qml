@@ -42,6 +42,9 @@ Singleton {
     readonly property var barRight: data.bar?.right ?? ["media", "tray", "status", "notifications"]
     readonly property var barStatus: data.bar?.status ?? ["bluetooth", "network", "audio", "desk", "battery"]
 
+    // Where the battery stops charging unless a full charge is unlocked from the bar
+    readonly property int chargeLimit: data.battery?.chargeLimit ?? 80
+
     // Non-persistent notifications kept in the notification center before the
     // lowest-priority, oldest ones are pushed off
     readonly property int notificationHistory: data.notifications?.history ?? 30
